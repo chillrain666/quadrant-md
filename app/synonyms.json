@@ -1,0 +1,18 @@
+{
+  "_note": "Synonym groups. Terms in a group are equivalent (case-insensitive, two or more). Used by search, tag filtering and Focus. Delete the file and everything still works.",
+  "groups": [
+    [
+      "TopN",
+      "focus"
+    ],
+    [
+      "someday",
+      "later",
+      "one-day"
+    ],
+    [
+      "idea",
+      "notion"
+    ]
+  ]
+}

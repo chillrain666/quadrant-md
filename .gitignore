@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Frontend
+app/web/node_modules/
+
+# Your own data directory (initialise it from templates/tasks, never commit it)
+/tasks/
+
+# Derived state: drag order / panel order; delete it to fall back to the default sort
+app/.order.json
+app/.lists.json
+app/*.json.tmp
+
+# OS junk
+.DS_Store
+Thumbs.db
