@@ -792,6 +792,29 @@ select:focus {
   border-bottom: 1px solid #f0f4f8;
 }
 
+/* Dragging must start anywhere on the row, not only on the grip.
+   Without this the browser prefers selecting the title text, so the drag never
+   begins and the drop never fires. Text is meant to be copied from the drawer. */
+.row,
+.focus-item {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: element;
+}
+
+.row:active,
+.focus-item:active {
+  cursor: grabbing;
+}
+
+.drawer-body,
+.drawer-body * {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 .focus-item:last-child {
   border-bottom: none;
 }
