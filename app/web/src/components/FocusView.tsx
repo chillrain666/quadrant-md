@@ -1,4 +1,5 @@
 import { useListDrag } from '../dragList'
+import { fileLabel } from '../fileLabel'
 import { renderInline } from '../inline'
 import type { FocusResponse, Status, Task } from '../types'
 import { useT } from '../i18n'
@@ -74,6 +75,9 @@ export function FocusView({ focus, limit, onLimit, onStatus, onSelect, onReorder
                 <div className="body">
                   <div className="title">{task.title ? renderInline(task.title) : t('row.noTitle')}</div>
                   <div className="meta">
+                    <span className="badge tag file-chip" title={task.file}>
+                      {fileLabel(task.file)}
+                    </span>
                     {task.p ? <span className={`badge p${task.p}`}>P{task.p}</span> : null}
                     {task.u ? <span className={`badge u${task.u}`}>U{task.u}</span> : null}
                     {task.ddl ? (
@@ -92,7 +96,6 @@ export function FocusView({ focus, limit, onLimit, onStatus, onSelect, onReorder
                         #{t}
                       </span>
                     ))}
-                    <span className="badge file">{task.project}</span>
                   </div>
                 </div>
               </li>

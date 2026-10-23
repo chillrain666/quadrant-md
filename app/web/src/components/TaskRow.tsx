@@ -1,4 +1,5 @@
 import type { DragEvent } from 'react'
+import { fileLabel } from '../fileLabel'
 import { useT } from '../i18n'
 import { renderInline } from '../inline'
 import type { Status, Task } from '../types'
@@ -74,6 +75,11 @@ export function TaskRow({
         <div className="title">{task.title ? renderInline(task.title) : t('row.noTitle')}</div>
 
         <div className="meta">
+          {/* Which file this task lives in, leftmost so it reads as a column */}
+          <span className="badge tag file-chip" title={task.file}>
+            {fileLabel(task.file)}
+          </span>
+
           {/* In the grid the cell header already says P/U, repeating it is noise */}
           {compact ? null : task.p ? <span className={`badge p${task.p}`}>P{task.p}</span> : null}
           {compact ? null : task.u ? <span className={`badge u${task.u}`}>U{task.u}</span> : null}
@@ -92,7 +98,6 @@ export function TaskRow({
               #{t}
             </span>
           ))}
-          {compact ? null : <span className="badge file">{task.project}</span>}
           {compact ? null : task.id ? <span className="badge id">{task.id}</span> : null}
         </div>
       </div>

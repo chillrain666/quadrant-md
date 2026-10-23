@@ -602,6 +602,16 @@ select:focus {
   color: #1d7f8d;
 }
 
+/* File chip: same pill shape as a tag, quieter colour, monospace-ish label */
+.badge.file-chip {
+  background: #f3f6f8;
+  color: #5a6672;
+  border: 1px solid #e3e9ef;
+  font-size: 10.5px;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  letter-spacing: 0.2px;
+}
+
 .badge.file,
 .badge.id {
   background: transparent;
