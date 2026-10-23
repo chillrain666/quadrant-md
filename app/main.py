@@ -128,6 +128,16 @@ class MoveIn(BaseModel):
     position: Literal["before", "after"]
 
 
+class DetailsIn(BaseModel):
+    """Markdown lines that belong under one task (the indented block).
+
+    Lines are sent as typed; the writer strips the indentation and re-adds two
+    spaces. An empty list removes the block.
+    """
+
+    details: list[str] = Field(default_factory=list)
+
+
 class ListOrderIn(BaseModel):
     """Full order of one panel after a drag (the client sends the finished key list)."""
 
@@ -546,6 +556,17 @@ def add_focus(task_id: str):
     """Drop on the Focus tab: add the `#TopN` tag (idempotent)."""
     try:
         return W.add_tag(task_id, "TopN").to_dict()
+    except LookupError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except (ValueError, RuntimeError) as exc:
+        raise HTTPException(409, str(exc)) from exc
+
+
+@app.put("/api/tasks/{task_id}/details", response_model=TaskOut)
+def put_details(task_id: str, body: DetailsIn):
+    """Replace the indented detail block under a task (Markdown, written back)."""
+    try:
+        return W.set_details(task_id, body.details).to_dict()
     except LookupError as exc:
         raise HTTPException(404, str(exc)) from exc
     except (ValueError, RuntimeError) as exc:

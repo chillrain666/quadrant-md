@@ -612,6 +612,85 @@ def test_move_to_someday_missing_file_is_refused():
         assert "T-261001-1" in (root / "1-active" / "x.md").read_text(encoding="utf-8")
 
 
+# ---------------------------------------------------------------- details
+
+
+@test
+def test_set_details_adds_a_block_under_the_task():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        f = root / "1-active" / "x.md"
+        write(f, SAMPLE)
+
+        task = W.set_details("T-261001-2", ["first line", "  - a bullet"], root=root)
+
+        assert task.detail == ["  first line", "  - a bullet"], task.detail
+        text = f.read_text(encoding="utf-8")
+        assert "- [ ] T-261001-2 Second task #P1 #U3 DDL:2026-10-20\n  first line\n  - a bullet\n" in text
+        # the neighbour above keeps its own block untouched
+        assert "      detail line one\n      detail line two\n" in text
+
+
+@test
+def test_set_details_replaces_the_existing_block():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        f = root / "1-active" / "x.md"
+        write(f, SAMPLE, newline="\r\n")
+
+        task = W.set_details("T-261001-1", ["only one line"], root=root)
+
+        assert task.detail == ["  only one line"]
+        data = f.read_bytes()
+        assert data.count(b"\n") == data.count(b"\r\n"), "CRLF must survive the edit"
+        text = f.read_text(encoding="utf-8")
+        assert "detail line two" not in text
+        assert "- [ ] T-261001-2 Second task" in text, "the next task must survive"
+
+
+@test
+def test_set_details_with_an_empty_list_removes_the_block():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        f = root / "1-active" / "x.md"
+        write(f, SAMPLE)
+
+        task = W.set_details("T-261001-1", [], root=root)
+
+        assert task.detail == []
+        text = f.read_text(encoding="utf-8")
+        assert "detail line" not in text
+        assert text.count("\n\n") >= 1, "the blank separator line must stay"
+
+
+@test
+def test_set_details_ignores_blank_lines_and_keeps_the_task_line():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        f = root / "1-active" / "x.md"
+        write(f, SAMPLE)
+        before = f.read_text(encoding="utf-8").split("\n")
+
+        task = W.set_details("T-261001-1", ["", "a", "   ", "b"], root=root)
+
+        assert task.detail == ["  a", "  b"]
+        after = f.read_text(encoding="utf-8").split("\n")
+        assert after[2] == before[2], "the task line itself must be byte-identical"
+
+
+@test
+def test_set_details_rejects_an_unknown_id():
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        write(root / "1-active" / "x.md", SAMPLE)
+        try:
+            W.set_details("T-261001-9", ["x"], root=root)
+        except LookupError:
+            pass
+        else:
+            raise AssertionError("an unknown id must raise LookupError")
+
+
 # ---------------------------------------------------------------- run
 
 

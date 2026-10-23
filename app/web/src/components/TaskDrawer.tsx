@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { api } from '../api'
 import { useT } from '../i18n'
 import type { Status, Task } from '../types'
-
 interface Props {
   task: Task | null
   onClose: () => void
@@ -14,15 +13,16 @@ const STATUSES: Status[] = ['todo', 'done', 'blocked']
 const STATUS_KEYS: Record<Status, string> = { todo: 'status.todo', done: 'status.done', blocked: 'status.blocked' }
 
 /**
- * Task edit drawer (slides in from the right).
+ * Task editor: a small centred dialog.
  *
- * Why a drawer instead of inline expansion or a centred modal:
- * - inline expansion pushes every task below it down (and stretches grid cells),
- *   which is exactly what we want to avoid;
- * - a centred modal covers the whole board, so comparing the next task means
- *   opening and closing it repeatedly;
- * - a right-hand drawer keeps the layout stable, leaves two thirds of the board
- *   visible on wide screens, and still has room for the form.
+ * It used to be a right-hand drawer. Why a compact modal now:
+ * - the drawer was full height, so a form with six fields looked enormous;
+ * - editing one task rarely means comparing it with the task below, so covering
+ *   the board is acceptable;
+ * - a narrow (<= 640px) dialog keeps the type tight and the eye on one column.
+ *
+ * The detail block is edited as plain Markdown lines and written back into the
+ * file as the indented lines under the task (see writer.set_details).
  */
 export function TaskDrawer({ task, onClose, onSaved, onDeleted }: Props) {
   const { t } = useT()
@@ -32,6 +32,7 @@ export function TaskDrawer({ task, onClose, onSaved, onDeleted }: Props) {
   const [status, setStatus] = useState<Status>('todo')
   const [ddl, setDdl] = useState('')
   const [tags, setTags] = useState('')
+  const [details, setDetails] = useState('')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
   // Deleting needs confirmation: a wrong delete costs more than a wrong edit
@@ -48,6 +49,7 @@ export function TaskDrawer({ task, onClose, onSaved, onDeleted }: Props) {
     setStatus(t.status)
     setDdl(t.ddl ?? '')
     setTags(t.tags.join(' '))
+    setDetails(t.detail.map((line) => line.replace(/^\s+/, '')).join('\n'))
     setErr('')
     setBusy(false)
     setConfirming(false)
@@ -81,6 +83,16 @@ export function TaskDrawer({ task, onClose, onSaved, onDeleted }: Props) {
         ddl: ddl || null,
         tags: tags.split(/[,，\s]+/).filter(Boolean),
       })
+      // Only touch the file again when the detail block really changed
+      const before = task.detail.map((line) => line.trim()).join('\n')
+      const after = details
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .join('\n')
+      if (before !== after) {
+        await api.setDetails(task.id, details.split('\n'))
+      }
       onSaved()
       onClose()
     } catch (e) {
@@ -187,19 +199,22 @@ export function TaskDrawer({ task, onClose, onSaved, onDeleted }: Props) {
             />
           </label>
 
-          <div className="field">
+          <label className="field">
             <span>{t('drawer.field.details')}</span>
-            {task.detail.length ? (
-              <pre className="detail-text">{task.detail.join('\n').trim()}</pre>
-            ) : (
-              <p className="muted">{t('drawer.noDetails')}</p>
-            )}
-          </div>
+            <textarea
+              className="details-input"
+              rows={4}
+              value={details}
+              placeholder={t('drawer.detailsPlaceholder')}
+              onChange={(e) => setDetails(e.target.value)}
+            />
+            <small className="muted">{t('drawer.detailsHint')}</small>
+          </label>
 
-          <div className="field">
-            <span>{t('drawer.field.raw')}</span>
+          <details className="field raw-block">
+            <summary>{t('drawer.field.raw')}</summary>
             <pre className="raw">{task.raw}</pre>
-          </div>
+          </details>
 
           <p className="muted drawer-meta">
             {task.file}:{task.line}

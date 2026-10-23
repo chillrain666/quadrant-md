@@ -115,6 +115,12 @@ export const api = {
       `/api/tasks/${encodeURIComponent(id)}`,
       { method: 'DELETE' },
     ),
+  /** Replace the indented detail block under a task (Markdown, written back) */
+  setDetails: (id: string, details: string[]) =>
+    request<Task>(`/api/tasks/${encodeURIComponent(id)}/details`, {
+      method: 'PUT',
+      body: JSON.stringify({ details }),
+    }),
   /** Drop on the Focus tab: add the #TopN tag */
   addFocus: (id: string) =>
     request<Task>(`/api/tasks/${encodeURIComponent(id)}/focus`, { method: 'POST' }),

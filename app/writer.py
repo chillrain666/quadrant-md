@@ -494,6 +494,61 @@ def update_task(
             raise
 
 
+# ---------------------------------------------------------------- details
+
+DETAIL_INDENT = "  "
+
+
+def _detail_block_end(src: Source, start: int) -> int:
+    """Index one past the last indented non-empty line following line `start` (0-based)."""
+    end = start + 1
+    while end < len(src.lines):
+        body = src.lines[end]
+        body = body[:-1] if body.endswith("\r") else body
+        if body[:1] in (" ", "\t") and body.strip():
+            end += 1
+            continue
+        break
+    return end
+
+
+def set_details(task_id: str, details: list[str], *, root: Path = TASKS_ROOT) -> Task:
+    """Replace the indented Markdown block under a task line.
+
+    `details` are the lines the user typed: leading indentation is stripped and every
+    non-empty line is re-indented with two spaces, which is what the parser treats as
+    "detail of the task above". An empty list removes the block.
+
+    Only that block is touched; the task line itself stays byte-identical, and the
+    file is re-parsed afterwards to prove the block landed where it should.
+    """
+    cleaned = [DETAIL_INDENT + d.rstrip().lstrip() for d in details if d.strip()]
+
+    with WRITE_LOCK:
+        task, path = locate(root, task_id)
+        src = read_source(path)
+        original = path.read_bytes()
+
+        start = task.line - 1
+        end = _detail_block_end(src, start)
+        src.lines[start + 1 : end] = [new_line_text(src, d) for d in cleaned]
+        _atomic_write(path, render_source(src))
+
+        try:
+            found = [t for t in parse_file(path, root) if t.id == task_id]
+            if len(found) != 1:
+                raise RuntimeError(f"{task_id} is not parseable after the detail edit")
+            after = found[0]
+            if after.detail != cleaned:
+                raise RuntimeError("the detail block did not land under the task")
+            if after.title != task.title or after.status != task.status:
+                raise RuntimeError("the task line changed unexpectedly")
+            return after
+        except Exception:
+            _atomic_write(path, original)
+            raise
+
+
 # ---------------------------------------------------------------- tags / tracks
 
 

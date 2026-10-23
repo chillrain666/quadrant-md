@@ -132,17 +132,19 @@ skills directory. Clients without skills support can still use `SKILL.md` as a r
 - **Search**: title / detail lines / tags / project / directory / ID, case-insensitive,
   synonym-aware
 - **Filters**: independent P and U axes, due window, status, directory cascade, tags
-- **Editing**: click a task for a right-hand drawer (title / P / U / status / DDL / tags)
-  — the layout never shifts
+- **Editing**: click a task for a compact centred dialog (title / P / U / status / DDL /
+  tags / detail lines)
 - **Write-back**: ticking stamps `DONE:`, plus create, delete and drag, all editing
   markdown directly
 - **Focus**: tag tasks `#TopN` and they sort themselves "overdue → today → P1U1 → …"
-- **Watch**: shows and books in their own tab, no quadrants
+- **Following**: shows and books in their own tab, no quadrants (`tasks/watch/`)
 - **Someday**: cards with a summary, full text on click, draggable in four directions
 - **Drag onto a tab**: drop a task on **Focus** to tag it `#TopN`, drop it on **someday**
   to move the whole task (line + details) into `4-someday.md`
-- **Search inside every panel**: the search box filters board, Focus, Watch and someday
+- **Search inside every panel**: the search box filters board, Focus, Following and someday
   alike
+- **Details written back**: the dialog edits the indented Markdown lines under the task
+  and saves straight into the file
 - **No ID? No problem**: a hand-written task without an ID gets one automatically the
   first time you edit it; duplicate IDs are detected and repaired in one click
 - **Language switch**: English / 中文, remembered per browser
@@ -214,10 +216,8 @@ cd app && uv run python run_tests.py    # 100+ assertions, all in temp directori
 
 ## Roadmap
 
-- [ ] Edit detail lines in the drawer
 - [ ] Savable multi-filter views
 - [ ] Indexing / caching beyond a few thousand tasks
-- [ ] (done in this release) fully English UI and docs
 
 ## License
 
