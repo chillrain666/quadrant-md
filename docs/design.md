@@ -48,7 +48,7 @@ They are all "todos" but their semantics differ, and mixing them pollutes everyt
 | Track | Meaning | P/U? | DDL? |
 | --- | --- | --- | --- |
 | `1-active/` | work in progress | yes | optional |
-| `watch/` | lists (shows, books, serials) | no | no |
+| `follow/` | lists (shows, books, serials) | no | no |
 | `4-someday.md` | one day / ideas | no | no |
 | `0-inbox.md` | not thought through | no | no |
 

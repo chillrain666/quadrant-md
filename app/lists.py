@@ -3,11 +3,11 @@
 Kept separate from the board's `.order.json`:
 - `.order.json` is **one global total order** (fractional ranks) for the board;
 - `.lists.json` stores **one list per panel**: Focus is rule-sorted by default,
-  Watch is split by file, Someday is a flat card list — the default orders are
+  Follow is split by file, Someday is a flat card list — the default orders are
   different, so they cannot share a single ranking.
 
 ```json
-{"focus": ["T-1", "T-2"], "watch:shows": ["T-3"], "someday": ["T-4", "- 2026-10-20 — an idea"]}
+{"focus": ["T-1", "T-2"], "follow:shows": ["T-3"], "someday": ["T-4", "- 2026-10-20 — an idea"]}
 ```
 
 List keys: the task ID when there is one; otherwise the raw line (used by free

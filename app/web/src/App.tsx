@@ -7,7 +7,7 @@ import { Header } from './components/Header'
 import { TaskList } from './components/TaskList'
 import { TaskDrawer } from './components/TaskDrawer'
 import { SynonymsDialog } from './components/SynonymsDialog'
-import { WatchPanel } from './components/WatchPanel'
+import { FollowPanel } from './components/FollowPanel'
 import { SomedayPanel } from './components/SomedayPanel'
 import { NoteDialog } from './components/NoteDialog'
 import { DEFAULT_FILTERS, hasFilters, toQuery, type Filters } from './filters'
@@ -18,13 +18,13 @@ function errText(e: unknown): string {
 }
 
 export default function App() {
-  const [view, setView] = useState<'board' | 'focus' | 'watch' | 'someday'>('board')
+  const [view, setView] = useState<'board' | 'focus' | 'follow' | 'someday'>('board')
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS)
   const [queryInput, setQueryInput] = useState('')
   const [data, setData] = useState<TasksResponse | null>(null)
   const [meta, setMeta] = useState<Meta | null>(null)
   const [focus, setFocus] = useState<FocusResponse | null>(null)
-  const [watch, setWatch] = useState<TasksResponse | null>(null)
+  const [follow, setFollow] = useState<TasksResponse | null>(null)
   const [someday, setSomeday] = useState<TasksResponse | null>(null)
   const [note, setNote] = useState<Task | null>(null)
   const [focusLimit, setFocusLimit] = useState(7)
@@ -69,7 +69,7 @@ export default function App() {
       setMeta(nextMeta)
       setData(nextData)
       if (view === 'focus') setFocus(await api.focus(focusLimit, filters.q || undefined))
-      if (view === 'watch') setWatch(await api.watch(filters.q || undefined))
+      if (view === 'follow') setFollow(await api.follow(filters.q || undefined))
       if (view === 'someday') setSomeday(await api.someday(filters.q || undefined))
     } catch (e) {
       setError(errText(e))
@@ -153,7 +153,7 @@ export default function App() {
   )
 
   /** Cross-cell drag: change P/U first, then (optionally) insert next to the drop row */
-  /** Panel drag: persist the full order under the matching scope (focus / watch:x / someday) */
+  /** Panel drag: persist the full order under the matching scope (focus / follow:x / someday) */
   const handleReorder = useCallback(
     async (scope: string, keys: string[]) => {
       try {
@@ -280,10 +280,10 @@ export default function App() {
             )}
           </main>
         </>
-      ) : view === 'watch' ? (
+      ) : view === 'follow' ? (
         <main className="content">
-          <WatchPanel
-            data={watch}
+          <FollowPanel
+            data={follow}
             onSelect={openEditor}
             onStatus={handleStatus}
             onCreated={refresh}

@@ -30,25 +30,26 @@ TASKS_ROOT = Path(
 INCLUDE_FILES: tuple[str, ...] = ()
 INCLUDE_DIRS = ("1-active",)
 
-# Second track: watch lists (shows, serials, books in progress).
+# Second track: follow lists (shows, serials, books in progress).
 # They have no P/U and no DDL; putting them in a quadrant would be semantic
 # pollution, so they get their own panel tab.
-# Directory is semantics: everything under `watch/` is kind=watch and never
+# Directory is semantics: everything under `follow/` is kind=follow and never
 # shows up in board filters or counts.
-# Directory name(s) for the watch track. Comma-separated in WATCH_DIRS, so a data
+# Directory name(s) for the follow track. Comma-separated in FOLLOW_DIRS, so a data
 # directory that already uses a localized name (e.g. a Chinese folder) works without
 # hard-coding it in the source.
-WATCH_DIRS: tuple[str, ...] = tuple(
-    part.strip()
-    for part in os.environ.get("WATCH_DIRS", "watch").split(",")
-    if part.strip()
+# FOLLOW_DIRS is the current name; WATCH_DIRS is the pre-rename name and still honoured,
+# so a launcher written before the rename keeps working instead of showing an empty panel.
+FOLLOW_DIR_NAMES = os.environ.get("FOLLOW_DIRS") or os.environ.get("WATCH_DIRS") or "follow"
+FOLLOW_DIRS: tuple[str, ...] = tuple(
+    part.strip() for part in FOLLOW_DIR_NAMES.split(",") if part.strip()
 )
 # Third track: someday (ideas / "not now"). A single file, also outside the board.
 SOMEDAY_FILES: tuple[str, ...] = ("4-someday.md",)
 KIND_TASK = "task"
-KIND_WATCH = "watch"
+KIND_FOLLOW = "follow"
 KIND_SOMEDAY = "someday"
-ALL_KINDS: tuple[str, ...] = (KIND_TASK, KIND_WATCH, KIND_SOMEDAY)
+ALL_KINDS: tuple[str, ...] = (KIND_TASK, KIND_FOLLOW, KIND_SOMEDAY)
 
 # Not scanned: long notes / timeline log / archive / templates
 EXCLUDE_DIRS = {"2-notes", "3-log", "5-archive", ".obsidian", ".git"}
@@ -146,7 +147,7 @@ class Task:
     links: list[str] = field(default_factory=list)  # [[T-xxx]]
 
     # --- track ---
-    kind: str = KIND_TASK  # task (board) / watch (list, never on the board)
+    kind: str = KIND_TASK  # task (board) / follow (list, never on the board)
 
     # --- source anchor ---
     file: str = ""  # path relative to tasks/
@@ -193,7 +194,7 @@ def iter_source_files(
 ) -> list[Path]:
     """List the markdown files to scan, sorted (a stable order makes diffing sane).
 
-    `kinds` selects tracks: task -> `1-active/`; watch -> `watch/`.
+    `kinds` selects tracks: task -> `1-active/`; follow -> `follow/`.
     The default scans both, because writes must be able to locate any task.
     """
     found: list[Path] = []
@@ -212,8 +213,8 @@ def iter_source_files(
     dirs: list[str] = []
     if KIND_TASK in kinds:
         dirs.extend(INCLUDE_DIRS)
-    if KIND_WATCH in kinds:
-        dirs.extend(WATCH_DIRS)
+    if KIND_FOLLOW in kinds:
+        dirs.extend(FOLLOW_DIRS)
 
     for dirname in dirs:
         base = root / dirname
@@ -348,8 +349,8 @@ def parse_file(path: Path, root: Path = TASKS_ROOT) -> list[Task]:
     parts = path.relative_to(root).parts
     group_path = list(parts[:-1])
     kind = KIND_TASK
-    if parts and parts[0] in WATCH_DIRS:
-        kind = KIND_WATCH
+    if parts and parts[0] in FOLLOW_DIRS:
+        kind = KIND_FOLLOW
     elif path.name in SOMEDAY_FILES:
         kind = KIND_SOMEDAY
 

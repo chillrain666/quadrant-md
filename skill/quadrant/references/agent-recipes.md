@@ -74,14 +74,14 @@ Delete the task line plus every indented line right after it. Do not touch neigh
 tasks, and do not leave a blank line behind. Deletion is irreversible: if the text is
 worth keeping, ask first whether to move it to someday.
 
-## Recipe 8: watch list
+## Recipe 8: follow list
 
 > "found another show"
 
 ```markdown
 - [ ] T-261021-19 Example Show F #shows
 ```
-Goes in `watch/shows.md` (or `watch/<anything>.md`). No P/U, no DDL. Ticking adds
+Goes in `follow/shows.md` (or `follow/<anything>.md`). No P/U, no DDL. Ticking adds
 `DONE:`.
 
 ## Recipe 9: weekly review

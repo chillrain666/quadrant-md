@@ -2,7 +2,7 @@
 name: quadrant
 description: |
   Markdown-first todo system + local board. Use when the user wants to manage a todo list,
-  an inbox, a someday list, a watch list, priorities/quadrants (P×U, importance/urgency,
+  an inbox, a someday list, a follow list, priorities/quadrants (P×U, importance/urgency,
   Eisenhower matrix), daily capture, task IDs, a weekly review, or wants a local kanban
   board that reads plain .md files — 待办 / 待办系统 / 记一下 / 加个待办 / 今天做什么 /
   这周计划 / 灵感记一下 / 将来某天 / 收件箱 / 优先级 / 重要不紧急 / 四象限 / 九宫格 /
@@ -48,7 +48,7 @@ tasks/
   3-log/            timeline log, append only, not scanned
   4-someday.md      "one day" items + ideas
   5-archive/        finished projects, not scanned
-  watch/            list track: shows / serials / books, no P/U
+  follow/            list track: shows / serials / books, no P/U
   README.md         the format contract (for humans)
 ```
 
@@ -83,7 +83,7 @@ Full grammar, quadrant mapping and edge cases: `references/md-conventions.md`.
 | "note that X" / "an idea" / no time mentioned | end of `0-inbox.md` | append `- X`, **no** ID, P or U |
 | "I need to finish X this week" / a deadline | end of `1-active/<project>.md` | allocate an ID, add `#P`/`#U` and `DDL:` |
 | "park X for later" / "I'd like to learn X someday" | end of `4-someday.md` | append `- X` (ID optional) |
-| "started watching X" | `watch/shows.md` | append `- [ ] T-... X #shows`, no P/U |
+| "started following X" | `follow/shows.md` | append `- [ ] T-... X #shows`, no P/U |
 | "X is done" | the original line | `[ ]` -> `[x]`, add `DONE:<today>` |
 | "drop X / X is stuck" | the original line | `[ ]` -> `[-]` (blocked) |
 | "make X P1 / more urgent" | the original line | change only `#P?` / `#U?` |
@@ -127,7 +127,7 @@ The frontend build ships in `app/web/dist`, so Node is not required to run it. O
 rebuilding the UI needs `cd app/web && npm install && npm run dev`.
 
 Board features: 3x3 grid (P×U), search, filters, grouping, drawer editing, tick
-write-back, delete, drag ordering, Focus (`#TopN`), watch panel, someday cards,
+write-back, delete, drag ordering, Focus (`#TopN`), follow panel, someday cards,
 synonym table. Details and the API list: `references/panel.md`.
 
 ## 5. Weekly review (the only mandatory ritual)

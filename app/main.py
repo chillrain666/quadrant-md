@@ -199,7 +199,7 @@ def get_tasks(
     ),
     include_done: bool = Query(False, description="Include done items (an explicit status wins)"),
     group_by: str = Query("none", description="Grouping: " + " / ".join(P.GROUP_MODES)),
-    kind: str = Query("task", pattern="^(task|watch)$", description="Track: task (board) / watch (list)"),
+    kind: str = Query("task", pattern="^(task|follow)$", description="Track: task (board) / follow (list)"),
 ):
     """Search + group. Order inside a group is the global rank, i.e. the dragged order."""
     if group_by not in P.GROUP_MODES:
@@ -249,15 +249,15 @@ def get_tasks(
     }
 
 
-@app.get("/api/watch", response_model=TasksResponse)
-def get_watch(q: str | None = Query(None, description="Keyword, same rules as the board")):
-    """Watch lists: grouped by file, **no P/U at all**.
+@app.get("/api/follow", response_model=TasksResponse)
+def get_follow(q: str | None = Query(None, description="Keyword, same rules as the board")):
+    """Follow lists: grouped by file, **no P/U at all**.
 
-    Done (watched) and blocked (dropped) entries are included -- a watch list is
+    Done (followed) and blocked (dropped) entries are included -- a follow list is
     small, and seeing history is what makes it a list. Ordered by ID (the order
     items were added); no dragging.
     """
-    ordered, _ = _load(kinds=(P.KIND_WATCH,))
+    ordered, _ = _load(kinds=(P.KIND_FOLLOW,))
     today = date.today()
     if q and q.strip():
         pred = P.keyword_pred(q)
@@ -283,7 +283,7 @@ def get_watch(q: str | None = Query(None, description="Keyword, same rules as th
         g.pop("sort")
         g["tasks"] = [
             t.to_dict()
-            for t in lists_mod.sort_by(g["tasks"], saved.get(f"watch:{g['key']}", []))
+            for t in lists_mod.sort_by(g["tasks"], saved.get(f"follow:{g['key']}", []))
         ]
 
     return {
@@ -293,7 +293,7 @@ def get_watch(q: str | None = Query(None, description="Keyword, same rules as th
         "total": len(ordered),
         "matched": len(ordered),
         "groupBy": "project",
-        "filters": {"kind": P.KIND_WATCH},
+        "filters": {"kind": P.KIND_FOLLOW},
         "groups": groups,
     }
 
@@ -339,7 +339,7 @@ def get_meta():
     """Raw material for the filters, plus a data self-check."""
     tasks, overrides = _load(kinds=(P.KIND_TASK,))
     today = date.today()
-    watch_total = len(P.load_tasks(kinds=(P.KIND_WATCH,)))
+    follow_total = len(P.load_tasks(kinds=(P.KIND_FOLLOW,)))
     someday_total = len(P.load_tasks(kinds=(P.KIND_SOMEDAY,)))
 
     def tally(fn) -> dict[str, int]:
@@ -380,7 +380,7 @@ def get_meta():
         "u": tally(lambda t: f"U{t.u}" if t.u else "U-"),
         "due": tally(lambda t: P.due_bucket(t, today)),
         "focus": sum(1 for t in tasks if P.is_focus(t) and t.status != "done"),
-        "watch": watch_total,
+        "follow": follow_total,
         "someday": someday_total,
         "overrides": len(overrides),
         # Self-check: lines that look like tasks but failed to parse
@@ -392,7 +392,7 @@ def get_meta():
 
 @app.put("/api/lists")
 def put_list(body: ListOrderIn):
-    """Persist one panel's manual order. Example scopes: focus / watch:shows / someday."""
+    """Persist one panel's manual order. Example scopes: focus / follow:shows / someday."""
     if not body.scope.strip():
         raise HTTPException(400, "scope cannot be empty")
     try:

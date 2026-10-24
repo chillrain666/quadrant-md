@@ -1,7 +1,7 @@
 [project]
 name = "quadrant"
 version = "1.0.0"
-description = "Markdown-first local todo board (P x U nine-grid, focus, inbox, someday, watch) driven by any AI agent"
+description = "Markdown-first local todo board (P x U nine-grid, focus, inbox, someday, follow) driven by any AI agent"
 requires-python = ">=3.10"
 dependencies = [
     "fastapi>=0.110",

@@ -1502,7 +1502,7 @@ select:focus {
 }
 
 .focus-item,
-.watch-row,
+.follow-row,
 .someday-item {
   position: relative;
 }
@@ -1606,18 +1606,18 @@ select:focus {
   color: var(--ink-3);
 }
 
-/* ------------------------------------------------ watch panel
+/* ------------------------------------------------ follow panel
    Lists such as shows or books: one card per file, deliberately small.
    No P/U, no DDL, no quadrants. */
 
-.watch-wrap {
+.follow-wrap {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 12px;
 }
 
-.watch-card {
+.follow-card {
   width: 300px;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -1626,7 +1626,7 @@ select:focus {
   overflow: hidden;
 }
 
-.watch-head {
+.follow-head {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1635,14 +1635,14 @@ select:focus {
   border-bottom: 1px solid var(--line);
 }
 
-.watch-head h2 {
+.follow-head h2 {
   margin: 0;
   font-size: 13px;
   font-weight: 650;
   color: var(--ink-2);
 }
 
-.watch-head .count {
+.follow-head .count {
   font-size: 11px;
   color: var(--ink-3);
   background: #eef3f8;
@@ -1650,7 +1650,7 @@ select:focus {
   border-radius: 999px;
 }
 
-.watch-head .add {
+.follow-head .add {
   margin-left: auto;
   font-size: 12.5px;
   color: var(--blue);
@@ -1658,11 +1658,11 @@ select:focus {
   border-radius: 6px;
 }
 
-.watch-head .add:hover {
+.follow-head .add:hover {
   background: var(--blue-soft);
 }
 
-.watch-add {
+.follow-add {
   display: flex;
   gap: 6px;
   padding: 8px 10px;
@@ -1670,7 +1670,7 @@ select:focus {
   background: #fbfdff;
 }
 
-.watch-add input {
+.follow-add input {
   flex: 1;
   min-width: 0;
   font-size: 12.5px;
@@ -1679,7 +1679,7 @@ select:focus {
   border-radius: 6px;
 }
 
-.watch-add button {
+.follow-add button {
   font-size: 12.5px;
   padding: 3px 10px;
   border-radius: 6px;
@@ -1687,12 +1687,12 @@ select:focus {
   background: var(--blue-soft);
 }
 
-.watch-rows {
+.follow-rows {
   display: flex;
   flex-direction: column;
 }
 
-.watch-row {
+.follow-row {
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -1701,32 +1701,32 @@ select:focus {
   cursor: pointer;
 }
 
-.watch-row:last-child {
+.follow-row:last-child {
   border-bottom: none;
 }
 
-.watch-row:hover {
+.follow-row:hover {
   background: #fbfdff;
 }
 
-.watch-row.done .watch-title {
+.follow-row.done .follow-title {
   color: var(--ink-3);
   text-decoration: line-through;
 }
 
-.watch-row.blocked .watch-title {
+.follow-row.blocked .follow-title {
   color: var(--ink-3);
   text-decoration: line-through dotted;
 }
 
-.watch-title {
+.follow-title {
   font-size: 12.8px;
   line-height: 1.45;
   color: var(--ink);
   word-break: break-word;
 }
 
-.watch-card .error {
+.follow-card .error {
   margin: 0;
   padding: 4px 10px 8px;
   font-size: 11.5px;

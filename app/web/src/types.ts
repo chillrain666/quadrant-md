@@ -17,7 +17,7 @@ export interface Task {
   done: string | null
   blockRef: string | null
   links: string[]
-  kind: 'task' | 'watch'
+  kind: 'task' | 'follow'
   file: string
   project: string
   groupPath: string[]
@@ -76,7 +76,7 @@ export interface Meta {
   u: Record<string, number>
   due: Record<string, number>
   focus: number
-  watch: number
+  follow: number
   someday: number
   overrides: number
   synonyms: string[][]

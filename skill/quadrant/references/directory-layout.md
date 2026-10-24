@@ -28,13 +28,13 @@ tasks/
 │   └── 2026-W43.md
 ├── 4-someday.md            one day / ideas (own panel)
 ├── 5-archive/              archive (not scanned)
-├── watch/                  list track (own panel)
+├── follow/                  list track (own panel)
 │   ├── shows.md
 │   └── books.md
 └── README.md               format contract (not scanned)
 ```
 
-Scanning rules live at the top of `app/parser.py` (`INCLUDE_DIRS`, `WATCH_DIRS`,
+Scanning rules live at the top of `app/parser.py` (`INCLUDE_DIRS`, `FOLLOW_DIRS`,
 `SOMEDAY_FILES`, `EXCLUDE_DIRS`, `EXCLUDE_PREFIXES`) — that is the single place to edit.
 
 ## Four tracks, each with its own panel
@@ -42,7 +42,7 @@ Scanning rules live at the top of `app/parser.py` (`INCLUDE_DIRS`, `WATCH_DIRS`,
 | Track | `kind` | Source | P/U? | Where it shows |
 | --- | --- | --- | --- | --- |
 | Tasks | `task` | `1-active/**` | yes, expected | quadrant grid / search / Focus |
-| Lists | `watch` | `watch/` | no | "Watch" tab |
+| Lists | `follow` | `follow/` | no | "Follow" tab |
 | Later | `someday` | `4-someday.md` | no | "someday" tab (cards) |
 | Capture | — | `0-inbox.md` | no | **nowhere** |
 
@@ -71,9 +71,9 @@ setx TASKS_ROOT "D:\notes\tasks"          # Windows (new terminal)
 Without `TASKS_ROOT` the default is `<repo>/tasks` (the parent of `app/`). `/api/meta`
 echoes the effective path — check it first when "my tasks are not showing up".
 
-The watch track's directory name is configurable too, for data directories that already
+The follow track's directory name is configurable too, for data directories that already
 use another name (a localized folder, for example):
 
 ```bash
-WATCH_DIRS=lists uv run python main.py      # several names: WATCH_DIRS=watch,lists
+FOLLOW_DIRS=lists uv run python main.py      # several names: FOLLOW_DIRS=follow,lists
 ```

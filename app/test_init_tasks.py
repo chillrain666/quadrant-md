@@ -28,7 +28,7 @@ def test_init_copies_template():
             "3-log",
             "4-someday.md",
             "5-archive",
-            "watch",
+            "follow",
             "README.md",
         ):
             assert (target / rel).exists(), rel

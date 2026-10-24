@@ -6,11 +6,11 @@ import { useT } from '../i18n'
 import type { Status, Task, TaskGroup, TasksResponse } from '../types'
 
 /**
- * Watch panel: lists such as shows, serials or books in progress.
+ * Follow panel: lists such as shows, serials or books in progress.
  *
  * Deliberately small: one card per file, no P/U, no DDL.
- * Ticking means finished (unticking means still watching); clicking opens the drawer.
- * Rows can be dragged to reorder (scope = `watch:<card name>`).
+ * Ticking means finished (unticking means still in progress); clicking opens the drawer.
+ * Rows can be dragged to reorder (scope = `follow:<card name>`).
  */
 interface Props {
   data: TasksResponse | null
@@ -20,23 +20,23 @@ interface Props {
   onReorder: (scope: string, keys: string[]) => void
 }
 
-export function WatchPanel({ data, onSelect, onStatus, onCreated, onReorder }: Props) {
+export function FollowPanel({ data, onSelect, onStatus, onCreated, onReorder }: Props) {
   const { t } = useT()
   if (!data) return <p className="empty">{t('board.loading')}</p>
   if (!data.groups.length) {
-    return <p className="empty">{t('watch.empty')}</p>
+    return <p className="empty">{t('follow.empty')}</p>
   }
 
   return (
-    <div className="watch-wrap">
+    <div className="follow-wrap">
       {data.groups.map((group) => (
-        <WatchGroup
+        <FollowGroup
           key={group.key}
           group={group}
           onSelect={onSelect}
           onStatus={onStatus}
           onCreated={onCreated}
-          onReorder={(keys) => onReorder(`watch:${group.key}`, keys)}
+          onReorder={(keys) => onReorder(`follow:${group.key}`, keys)}
         />
       ))}
     </div>
@@ -51,7 +51,7 @@ interface GroupProps {
   onReorder: (keys: string[]) => void
 }
 
-function WatchGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupProps) {
+function FollowGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupProps) {
   const { t } = useT()
   const [adding, setAdding] = useState(false)
   const [title, setTitle] = useState('')
@@ -81,13 +81,13 @@ function WatchGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupPr
   }
 
   return (
-    <section className="watch-card">
-      <header className="watch-head">
+    <section className="follow-card">
+      <header className="follow-head">
         <h2>{group.label}</h2>
         <span className="count">{group.count}</span>
         <button
           className="add"
-          title={t('watch.addTo', { what: group.label })}
+          title={t('follow.addTo', { what: group.label })}
           onClick={() => {
             setAdding((v) => !v)
             setTitle('')
@@ -99,11 +99,11 @@ function WatchGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupPr
       </header>
 
       {adding ? (
-        <div className="watch-add">
+        <div className="follow-add">
           <input
             autoFocus
             value={title}
-            placeholder={t('watch.placeholder')}
+            placeholder={t('follow.placeholder')}
             onChange={(e) => setTitle(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') void submit()
@@ -111,19 +111,19 @@ function WatchGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupPr
             }}
           />
           <button onClick={() => void submit()} disabled={busy}>
-            {busy ? '…' : t('watch.add')}
+            {busy ? '…' : t('follow.add')}
           </button>
         </div>
       ) : null}
 
       {err ? <p className="error">{err}</p> : null}
 
-      <div className="watch-rows">
+      <div className="follow-rows">
         {group.tasks.map((task) => {
           const key = task.id ?? task.raw
           return (
             <div
-              className={`watch-row ${task.status} ${drag.cls(key)}`}
+              className={`follow-row ${task.status} ${drag.cls(key)}`}
               key={key}
               onClick={() => onSelect(task)}
               title={t('row.editHint')}
@@ -131,7 +131,7 @@ function WatchGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupPr
             >
               <button
                 className={`check ${task.status}`}
-                title={task.status === 'done' ? t('watch.markWatching') : t('watch.markFinished')}
+                title={task.status === 'done' ? t('follow.markInProgress') : t('follow.markFinished')}
                 onClick={(e) => {
                   e.stopPropagation()
                   onStatus(task, task.status === 'done' ? 'todo' : 'done')
@@ -139,7 +139,7 @@ function WatchGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupPr
               >
                 {task.status === 'done' ? '✓' : task.status === 'blocked' ? '!' : ''}
               </button>
-              <span className="watch-title">
+              <span className="follow-title">
                 {task.title ? renderInline(task.title) : t('row.noTitle')}
               </span>
             </div>

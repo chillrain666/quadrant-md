@@ -66,7 +66,7 @@ tasks/
 ├── 3-log/           timeline log, append only (not scanned)
 ├── 4-someday.md     "one day" items + ideas (own panel)
 ├── 5-archive/       finished projects (not scanned)
-└── watch/           lists: shows, books, serials (own panel, no P/U)
+└── follow/          lists: shows, books, serials (own panel, no P/U)
 ```
 
 Four tracks, each with its own surface: tasks reach the quadrants, lists do not, ideas go
@@ -100,7 +100,7 @@ each axis has three levels; forcing that into four cells throws information away
 pi, Cursor and friends. Drop it into your agent's skills directory and it knows:
 
 - which file a sentence belongs to ("note this" → inbox, "this week" → active,
-  "someday" → someday, "started watching X" → watch)
+  "someday" → someday, "started following X" → follow)
 - how to write without damaging the file (append only, edit one line, per-file newline
   style, compute the ID)
 - how to run the board and how to do a weekly review

@@ -8,7 +8,7 @@ iCloud or a USB stick; edit it in Obsidian, VSCode or vim. There are only a few 
 | Path | What it is | On the board? |
 | --- | --- | --- |
 | `1-active/**` | Work in progress; one file per project | ✅ the **only** source of the quadrants and Focus |
-| `watch/` | Lists: shows, serials, books | ✅ own tab, no P/U, no counts |
+| `follow/` | Lists: shows, serials, books | ✅ own tab, no P/U, no counts |
 | `4-someday.md` | "One day" items and ideas | ✅ own panel |
 | `0-inbox.md` | Raw capture, not thought through yet | ❌ never shown |
 | `2-notes/` | Long details | ❌ |

@@ -56,7 +56,7 @@ Tag **at most five** tasks with `#TopN` (`N` is the literal letter):
 ## Review output
 
 Write it to `3-log/`; format is free, but it must have three sections: what was done /
-where it is stuck / what to watch next week. Logs are append-only — do not edit last
+where it is stuck / what to follow next week. Logs are append-only — do not edit last
 week's entry.
 
 ## How the agent helps

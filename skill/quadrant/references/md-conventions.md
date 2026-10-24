@@ -27,7 +27,7 @@
 | `DONE:2026-10-21` | anywhere | completion date, added when ticking |
 | `^T-261021-1` | end of line | block reference (Obsidian); ignored on parse, hidden in the UI |
 
-A `#` in the title becomes a tag, so watch out when writing titles (`C#` is a tag too).
+A `#` in the title becomes a tag, so follow out when writing titles (`C#` is a tag too).
 If you really need a literal `#`, use `＃` or rephrase.
 
 ## ID rules

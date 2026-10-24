@@ -63,9 +63,9 @@ export const api = {
     request<FocusResponse>(
       `/api/focus?limit=${limit}${q ? `&q=${encodeURIComponent(q)}` : ''}`,
     ),
-  /** Watch lists (shows / serials): grouped by file, no P/U */
-  watch: (q?: string) =>
-    request<TasksResponse>(`/api/watch${q ? `?q=${encodeURIComponent(q)}` : ''}`),
+  /** Follow lists (shows / serials): grouped by file, no P/U */
+  follow: (q?: string) =>
+    request<TasksResponse>(`/api/follow${q ? `?q=${encodeURIComponent(q)}` : ''}`),
   /** Someday (ideas / not now): a single file, no P/U */
   someday: (q?: string) =>
     request<TasksResponse>(`/api/someday${q ? `?q=${encodeURIComponent(q)}` : ''}`),
@@ -131,7 +131,7 @@ export const api = {
       { method: 'POST' },
     ),
   synonyms: () => request<{ groups: string[][] }>('/api/synonyms'),
-  /** Persist one panel's order; scopes look like focus / watch:shows / someday */
+  /** Persist one panel's order; scopes look like focus / follow:shows / someday */
   saveList: (scope: string, keys: string[]) =>
     request<{ scope: string; count: number }>('/api/lists', {
       method: 'PUT',

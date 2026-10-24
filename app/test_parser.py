@@ -762,35 +762,35 @@ def test_keyword_pred_is_usable_alone():
 
 
 @test
-def test_watch_dir_is_the_watch_track():
-    """`watch/` is the second track: kind=watch, never mixed into the board."""
+def test_follow_dir_is_the_follow_track():
+    """`follow/` is the second track: kind=follow, never mixed into the board."""
     with tempfile.TemporaryDirectory() as d:
         root = Path(d)
         _write(root / "1-active" / "study.md", "- [ ] T-261020-1 On the board #P1 #U3\n")
-        _write(root / "watch" / "shows.md", "- [ ] T-261020-2 Watch Silicon Valley #shows\n")
+        _write(root / "follow" / "shows.md", "- [ ] T-261020-2 Follow Silicon Valley #shows\n")
 
         allt = load_tasks(root)
         assert len(allt) == 2, [t.id for t in allt]
         kinds = {t.project: t.kind for t in allt}
         assert kinds["study"] == "task", kinds
-        assert kinds["shows"] == "watch", kinds
+        assert kinds["shows"] == "follow", kinds
 
         only = load_tasks(root, kinds=("task",))
         assert [t.project for t in only] == ["study"], only
 
         assert len(iter_source_files(root, kinds=("task",))) == 1
-        assert len(iter_source_files(root, kinds=("watch",))) == 1
+        assert len(iter_source_files(root, kinds=("follow",))) == 1
 
 
 @test
-def test_watch_entries_need_no_p_or_u():
-    """Watch lists have no quadrants: missing P/U is not an error and stays off the board."""
+def test_follow_entries_need_no_p_or_u():
+    """Follow lists have no quadrants: missing P/U is not an error and stays off the board."""
     with tempfile.TemporaryDirectory() as d:
         root = Path(d)
-        _write(root / "watch" / "books.md", "- [ ] T-261020-3 Untitled (TBD) #books\n")
-        t = load_tasks(root, kinds=("watch",))[0]
+        _write(root / "follow" / "books.md", "- [ ] T-261020-3 Untitled (TBD) #books\n")
+        t = load_tasks(root, kinds=("follow",))[0]
         assert t.p is None and t.u is None, t
-        assert t.kind == "watch"
+        assert t.kind == "follow"
         assert t.tags == ["books"], t.tags
         assert load_tasks(root, kinds=("task",)) == []
 

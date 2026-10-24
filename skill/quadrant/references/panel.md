@@ -8,7 +8,7 @@ uv sync                                          # first run: fastapi + uvicorn
 uv run python main.py                            # -> http://127.0.0.1:8000
 uv run python main.py --port 8010                # port already taken
 TASKS_ROOT=/path/to/tasks uv run python main.py  # point at another data directory
-WATCH_DIRS=watch,lists uv run python main.py    # watch-track folder names (comma separated)
+FOLLOW_DIRS=follow,lists uv run python main.py    # follow-track folder names (comma separated)
 ```
 
 No `uv`? `python -m venv .venv && .venv/Scripts/pip install -r requirements.txt`
@@ -33,7 +33,7 @@ cd app/web && npm run dev                      # development (5173, /api proxied
 | Editing | click a task -> right-hand drawer: title, P, U, status, DDL, tags |
 | Write-back | tick, create, delete, drag: all edit markdown directly |
 | Focus | tasks tagged `#TopN` (or a synonym), ordered "overdue -> today -> P1U1 -> ...", limit adjustable |
-| Watch | `watch/` lists grouped by file, no P/U |
+| Follow | `follow/` lists grouped by file, no P/U |
 | Someday | `4-someday.md` cards: summary only, click to read, drag in four directions |
 
 ## How order is stored
@@ -41,7 +41,7 @@ cd app/web && npm run dev                      # development (5173, /api proxied
 - Board (inside a cell / across cells): `.order.json` -- **one global total order** with
   fractional ranks, only for items that were dragged. A drop lands **flush against the
   anchor**, using *global* neighbours rather than the ones visible in the current view.
-- Focus / Watch / Someday: `.lists.json`, one full list per panel.
+- Focus / Follow / Someday: `.lists.json`, one full list per panel.
 - Both files are **derived state**: delete them and the default order (ID order / rule
   order) comes back. No content is lost.
 
@@ -52,7 +52,7 @@ cd app/web && npm run dev                      # development (5173, /api proxied
 | GET | `/api/tasks` | `q` `p` `u` `tag` `status` `project` `dir` `due` `include_done` `group_by` |
 | GET | `/api/meta` | tags, directory tree, files, counts, synonyms, format self-check, `tasksRoot` |
 | GET | `/api/focus` | tasks tagged `#TopN`, rule-sorted (`q` searches within Focus) |
-| GET | `/api/watch` | watch lists, grouped by file (`q` searches within the lists) |
+| GET | `/api/follow` | follow lists, grouped by file (`q` searches within the lists) |
 | GET | `/api/someday` | someday entries, single group (`q` searches within it) |
 | POST | `/api/tasks` | create |
 | PATCH | `/api/tasks/{id}` | change `status` / `p` / `u` / `title` / `tags` / `ddl` (send only what changes) |

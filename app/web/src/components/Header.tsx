@@ -2,8 +2,8 @@ import { useT, type Lang } from '../i18n'
 import type { Meta, TasksResponse } from '../types'
 
 interface Props {
-  view: 'board' | 'focus' | 'watch' | 'someday'
-  onView: (v: 'board' | 'focus' | 'watch' | 'someday') => void
+  view: 'board' | 'focus' | 'follow' | 'someday'
+  onView: (v: 'board' | 'focus' | 'follow' | 'someday') => void
   query: string
   onQuery: (v: string) => void
   meta: Meta | null
@@ -67,11 +67,11 @@ export function Header({
             {meta ? <em>{meta.focus}</em> : null}
           </button>
           <button
-            className={view === 'watch' ? 'tab active' : 'tab'}
-            onClick={() => onView('watch')}
+            className={view === 'follow' ? 'tab active' : 'tab'}
+            onClick={() => onView('follow')}
           >
-            {t('tab.watch')}
-            {meta ? <em>{meta.watch}</em> : null}
+            {t('tab.follow')}
+            {meta ? <em>{meta.follow}</em> : null}
           </button>
           <button
             className={view === 'someday' ? 'tab active' : 'tab'}
