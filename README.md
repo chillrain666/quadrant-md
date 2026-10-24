@@ -128,26 +128,48 @@ skills directory. Clients without skills support can still use `SKILL.md` as a r
 
 ## Board features
 
-- **3×3 grid**: one row per P, one column per U; empty cells stay visible
-- **Search**: title / detail lines / tags / project / directory / ID, case-insensitive,
-  synonym-aware
-- **Filters**: independent P and U axes, due window, status, directory cascade, tags
-- **Editing**: click a task for a compact centred dialog (title / P / U / status / DDL /
-  tags / detail lines)
-- **Write-back**: ticking stamps `DONE:`, plus create, delete and drag, all editing
-  markdown directly
-- **Focus**: tag tasks `#TopN` and they sort themselves "overdue → today → P1U1 → …"
-- **Following**: shows and books in their own tab, no quadrants (`tasks/watch/`)
-- **Someday**: cards with a summary, full text on click, draggable in four directions
-- **Drag onto a tab**: drop a task on **Focus** to tag it `#TopN`, drop it on **someday**
-  to move the whole task (line + details) into `4-someday.md`
-- **Search inside every panel**: the search box filters board, Focus, Following and someday
-  alike
-- **Details written back**: the dialog edits the indented Markdown lines under the task
-  and saves straight into the file
-- **No ID? No problem**: a hand-written task without an ID gets one automatically the
-  first time you edit it; duplicate IDs are detected and repaired in one click
-- **Language switch**: English / 中文, remembered per browser
+### Find
+
+- **One search box, everything**: title, detail lines, tags, file name / directory and
+  task ID. Case-insensitive, `#reading` is the same as `reading`, and the synonym table
+  expands terms (`TopN` = `focus`, `reading` = `books`).
+- **Search inside every panel**: the same box filters the board, Focus, Following and
+  someday.
+- **Filters**: independent P and U axes, due window (any time / overdue / today / this
+  week / this month / no DDL), status, cascading directory picker, tags with counts.
+- **Grouping**: the P×U grid, or grouped by project file.
+
+### Move
+
+- **Tick it off**: click the circle to complete (stamps `DONE:`); click again to reopen.
+- **Drag to reorder** inside a cell or a panel; the order sticks.
+- **Drag across cells to change the quadrant**: dropping a task on another P×U cell
+  rewrites `#P` / `#U` for you.
+- **Drag onto a tab**: dropping on **Focus** adds `#TopN`; dropping on **someday** moves
+  the whole task (line + detail lines) into `4-someday.md`.
+- **Someday cards** drag in four directions to reorder.
+
+### Edit
+
+- **Click a task** for a compact dialog: title, importance, urgency, status
+  (todo / done / blocked), DDL, tags and detail lines — plus the raw line and
+  `file:line · ID` for when something looks off.
+- **Detail lines are the file**: the indented Markdown block under the task is edited
+  inline and written straight back (blank lines dropped, two-space indent restored).
+- **Keyboard**: Enter saves, Esc closes, deleting asks once.
+- **Hand-written tasks** get an ID on the first edit (located by file + line + raw text),
+  so anything you typed by hand becomes editable like the rest.
+- **Duplicate IDs** are reported and repaired in one click; lines that look like tasks
+  but fail the parser (a missing space after `- [ ]`) show up in a banner instead of
+  disappearing.
+
+### See
+
+- **File chip**: every row starts with the name of the file it lives in, so you can tell
+  projects apart at a glance.
+- **Focus sorts itself**: overdue → due today → P1U1 → P1 → U1 → nearest DDL → your own
+  drag order.
+- **Language switch**: English / 中文, remembered per browser.
 
 <p align="center">
   <img src="docs/screenshot-focus.png" width="49%" alt="Focus view">
