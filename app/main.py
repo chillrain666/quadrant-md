@@ -371,6 +371,7 @@ def get_meta():
         "total": len(tasks),
         "tags": P.collect_tags(tasks),
         "synonyms": syn.load_groups(),
+        "synonymsSource": syn.active_file()[1],
         "projects": sorted({t.project for t in tasks}),
         "dirs": P.dir_tree(tasks),
         "files": files,
@@ -404,8 +405,8 @@ def put_list(body: ListOrderIn):
 
 @app.get("/api/synonyms")
 def get_synonyms():
-    """Current synonym groups (the UI can read and edit them directly)."""
-    return {"groups": syn.load_groups()}
+    """Current synonym groups, plus whether they come from the user copy or the defaults."""
+    return {"groups": syn.load_groups(), "source": syn.active_file()[1]}
 
 
 @app.put("/api/synonyms")

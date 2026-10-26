@@ -135,6 +135,9 @@ skills directory. Clients without skills support can still use `SKILL.md` as a r
   expands terms (`TopN` = `focus`, `reading` = `books`).
 - **Search inside every panel**: the same box filters the board, Focus, Following and
   someday.
+- **Synonyms ship with defaults**: the repo carries `app/synonyms.example.json`; the
+  first save writes your own `app/synonyms.json` (git-ignored), so personal edits never
+  collide with a `git pull`.
 - **Filters**: independent P and U axes, due window (any time / overdue / today / this
   week / this month / no DDL), status, cascading directory picker, tags with counts.
 - **Grouping**: the P×U grid, or grouped by project file.

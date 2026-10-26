@@ -122,6 +122,8 @@ const en: Dict = {
   'syn.title': 'Synonyms',
   'syn.hint':
     'Terms in a group are equivalent, case-insensitive, and a group may hold more than two. Search, tag filters and Focus all treat them as one; groups with fewer than two terms are ignored.',
+  'syn.defaults':
+    'No personal table yet — these are the shipped defaults. Saving creates your own copy, which will not be overwritten by updates.',
   'syn.placeholder': 'e.g. TopN, focus',
   'syn.remove': 'Remove',
   'syn.addGroup': '+ Add a group',
@@ -268,6 +270,8 @@ const zh: Dict = {
   'syn.title': '同义词',
   'syn.hint':
     '一组里的词彼此等价，不区分大小写，可以多于两个。搜索、标签筛选、Focus 判定都会按组处理；少于两个词的组会被忽略。',
+  'syn.defaults':
+    '当前用的是自带的默认表。保存后会在本机生成你自己的副本，以后更新不会覆盖它。',
   'syn.placeholder': '例如：TopN, focus',
   'syn.remove': '删除',
   'syn.addGroup': '＋ 添加一组',

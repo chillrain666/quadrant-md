@@ -63,7 +63,7 @@ cd app/web && npm run dev                      # development (5173, /api proxied
 | POST | `/api/tasks/{id}/someday` | move the task into `4-someday.md` (drop on that tab) |
 | POST | `/api/ids/assign` | `{file, line, raw}` -> give an ID-less task an ID |
 | POST | `/api/ids/repair` | re-number duplicate IDs (first occurrence keeps its own) |
-| GET/PUT | `/api/synonyms` | read / replace the synonym table |
+| GET/PUT | `/api/synonyms` | read (with `source`: user / defaults) / replace the table |
 
 Interactive docs: `http://127.0.0.1:8000/docs`.
 
@@ -77,6 +77,7 @@ Interactive docs: `http://127.0.0.1:8000/docs`.
 | New routes return 404 | the backend is an old process: restart it |
 | Port already taken | automatic: the app steps to the next free port and logs the URL; `--strict-port` to fail instead |
 | Order looks odd | delete `app/.order.json` to fall back to ID order |
+| Synonyms look like the defaults | no personal copy yet; saving once creates `app/synonyms.json` (git-ignored) |
 | "duplicate ID" when saving | the yellow banner offers **Repair IDs**; it re-numbers every occurrence after the first |
 | Editing a hand-written task fails | it has no ID yet: the UI assigns one on open (or POST `/api/ids/assign`) |
 | Ticking does not change the file | file read-only or locked by an editor; check the terminal |

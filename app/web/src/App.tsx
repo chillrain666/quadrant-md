@@ -333,6 +333,7 @@ export default function App() {
       {synOpen && meta ? (
         <SynonymsDialog
           groups={meta.synonyms}
+          source={meta.synonymsSource}
           onClose={() => setSynOpen(false)}
           onSaved={refresh}
         />

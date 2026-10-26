@@ -130,7 +130,8 @@ export const api = {
       `/api/tasks/${encodeURIComponent(id)}/someday`,
       { method: 'POST' },
     ),
-  synonyms: () => request<{ groups: string[][] }>('/api/synonyms'),
+  synonyms: () =>
+    request<{ groups: string[][]; source: string }>('/api/synonyms'),
   /** Persist one panel's order; scopes look like focus / follow:shows / someday */
   saveList: (scope: string, keys: string[]) =>
     request<{ scope: string; count: number }>('/api/lists', {

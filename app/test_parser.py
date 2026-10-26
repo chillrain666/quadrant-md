@@ -758,6 +758,84 @@ def test_keyword_pred_is_usable_alone():
     assert keyword_pred("nope")(t) is False
 
 
+# ---------------------------------------------------------------- synonym files
+
+
+def _syn_tmp():
+    """Point the synonym module at temp files, restoring the originals afterwards."""
+    import tempfile
+    from pathlib import Path as _Path
+
+    import synonyms as syn
+
+    tmp = tempfile.TemporaryDirectory()
+    root = _Path(tmp.name)
+    old = (syn.SYNONYMS_FILE, syn.SYNONYMS_DEFAULTS, syn._cache_key, syn._cache_groups)
+    syn.SYNONYMS_FILE = root / "synonyms.json"
+    syn.SYNONYMS_DEFAULTS = root / "synonyms.example.json"
+    syn._cache_key, syn._cache_groups = None, None
+    return tmp, root, syn, old
+
+
+@test
+def test_synonyms_fall_back_to_the_shipped_defaults():
+    tmp, root, syn, old = _syn_tmp()
+    try:
+        (root / "synonyms.example.json").write_text(
+            '{"groups": [["TopN", "focus"], ["reading", "books"]]}', encoding="utf-8"
+        )
+        # No personal copy yet: the defaults are usable straight away
+        assert syn.load_groups() == [["TopN", "focus"], ["reading", "books"]]
+        assert syn.active_file()[1] == "defaults"
+    finally:
+        syn.SYNONYMS_FILE, syn.SYNONYMS_DEFAULTS, syn._cache_key, syn._cache_groups = old
+        tmp.cleanup()
+
+
+@test
+def test_synonyms_user_copy_wins_and_is_created_on_save():
+    tmp, root, syn, old = _syn_tmp()
+    try:
+        (root / "synonyms.example.json").write_text(
+            '{"groups": [["TopN", "focus"]]}', encoding="utf-8"
+        )
+        syn.save_groups([["TopN", "focus"], ["garden", "yard"]])
+        assert (root / "synonyms.json").exists(), "saving must create the personal copy"
+        assert syn.active_file()[1] == "user"
+        assert ["garden", "yard"] in syn.load_groups()
+        # The shipped defaults are never modified
+        assert "garden" not in (root / "synonyms.example.json").read_text(encoding="utf-8")
+    finally:
+        syn.SYNONYMS_FILE, syn.SYNONYMS_DEFAULTS, syn._cache_key, syn._cache_groups = old
+        tmp.cleanup()
+
+
+@test
+def test_broken_user_copy_falls_back_to_defaults():
+    tmp, root, syn, old = _syn_tmp()
+    try:
+        (root / "synonyms.example.json").write_text(
+            '{"groups": [["TopN", "focus"]]}', encoding="utf-8"
+        )
+        (root / "synonyms.json").write_text("{ not json", encoding="utf-8")
+        assert syn.load_groups() == [["TopN", "focus"]]
+        assert syn.active_file()[1] == "defaults"
+    finally:
+        syn.SYNONYMS_FILE, syn.SYNONYMS_DEFAULTS, syn._cache_key, syn._cache_groups = old
+        tmp.cleanup()
+
+
+@test
+def test_synonyms_empty_when_neither_file_exists():
+    tmp, root, syn, old = _syn_tmp()
+    try:
+        assert syn.load_groups() == []
+        assert syn.active_file()[1] == "none"
+    finally:
+        syn.SYNONYMS_FILE, syn.SYNONYMS_DEFAULTS, syn._cache_key, syn._cache_groups = old
+        tmp.cleanup()
+
+
 # ---------------------------------------------------------------- run
 
 

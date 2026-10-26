@@ -4,12 +4,14 @@ import { useT } from '../i18n'
 
 interface Props {
   groups: string[][]
+  /** "user" = own copy on disk, "defaults" = shipped example, "none" = neither */
+  source: string
   onClose: () => void
   onSaved: () => void
 }
 
 /** Synonym settings: terms in a group are equivalent; search, tag filters and Focus all use them. */
-export function SynonymsDialog({ groups, onClose, onSaved }: Props) {
+export function SynonymsDialog({ groups, source, onClose, onSaved }: Props) {
   const { t } = useT()
   const [rows, setRows] = useState<string[]>(() =>
     groups.length ? groups.map((g) => g.join(', ')) : [''],
@@ -65,6 +67,10 @@ export function SynonymsDialog({ groups, onClose, onSaved }: Props) {
           <p className="hint">
             {t('syn.hint')}
           </p>
+
+          {source === 'defaults' ? (
+            <p className="hint muted">{t('syn.defaults')}</p>
+          ) : null}
 
           {rows.map((row, i) => (
             <div className="syn-row" key={i}>

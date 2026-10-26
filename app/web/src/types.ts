@@ -80,6 +80,8 @@ export interface Meta {
   someday: number
   overrides: number
   synonyms: string[][]
+  /** "user" (own copy), "defaults" (shipped example) or "none" */
+  synonymsSource: string
   suspicious: { file: string; line: number; raw: string }[]
   duplicateIds: {
     id: string

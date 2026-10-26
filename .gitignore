@@ -19,3 +19,6 @@ app/*.json.tmp
 # OS junk
 .DS_Store
 Thumbs.db
+
+# The user copy of the synonym table (created on first save; defaults ship as the example)
+app/synonyms.json
