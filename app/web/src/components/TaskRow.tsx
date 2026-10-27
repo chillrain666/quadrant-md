@@ -1,5 +1,6 @@
 import type { DragEvent } from 'react'
 import { fileLabel } from '../fileLabel'
+import { useHoverTip } from '../hoverDetails'
 import { useT } from '../i18n'
 import { renderInline } from '../inline'
 import type { Status, Task } from '../types'
@@ -36,6 +37,7 @@ export function TaskRow({
   compact = false,
 }: Props) {
   const { t } = useT()
+  const hover = useHoverTip()
   return (
     <div
       className={[
@@ -54,8 +56,10 @@ export function TaskRow({
       onDrop={(e) => onDrop(e, task, groupKey)}
       onDragEnd={onDragEnd}
       onClick={() => onSelect(task)}
-      title={t('row.edit')}
+      {...hover.bind(task.detail, t('row.edit'))}
     >
+      {hover.node}
+
       <span className="grip" title={t('row.drag')}>
         ⠿
       </span>

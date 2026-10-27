@@ -6,7 +6,8 @@ description: |
   Eisenhower matrix), daily capture, task IDs, a weekly review, or wants a local kanban
   board that reads plain .md files — 待办 / 待办系统 / 记一下 / 加个待办 / 今天做什么 /
   这周计划 / 灵感记一下 / 将来某天 / 收件箱 / 优先级 / 重要不紧急 / 四象限 / 九宫格 /
-  周复盘 / 归档.
+  周复盘 / 归档 / 日报 / 周报 / 总结 / 今天我做了什么 / 这周做了什么 / standup /
+  weekly report / summarize my week.
   Writes into plain markdown (one line per task) instead of a database, so any editor and
   any agent share the same source of truth. Not for calendar reminders or alarms (use the
   user's reminder app) and not for note-taking apps with their own storage format.
@@ -136,11 +137,27 @@ When the user says "review / how did this week go / tidy up", follow
 `references/weekly-review.md`: count completions, clear the inbox, move someday items,
 archive finished projects, and set next week's Focus.
 
-## 6. Reference files
+## 6. Summaries (daily / weekly)
+
+When the user asks for a 日报 / 周报 / summary / "what did I do this week":
+
+- **Evidence only.** A task counts as done only if it carries `DONE:<date>`. Never
+  promote "basically finished" into `Done`.
+- **Daily** = today's `DONE:` items + what is blocked + tomorrow's next. 5–8 lines.
+- **Weekly** = shipped / slipped / where the week went / blocked / next week's Focus.
+  Half a page, with counts, not a backlog dump.
+- Save it to `3-log/` (daily: `YYYY-MM/YYYY-MM-DD.md`, weekly: `YYYY-Www.md`),
+  append-only. Reporting is **read-only** unless the user asks for changes.
+
+Full templates and the exact commands: `references/summaries.md`.
+
+## 7. Reference files
 
 - `references/directory-layout.md` -- directory hierarchy, four tracks, what is skipped
 - `references/md-conventions.md` -- line grammar, ID rules, quadrants, `^T-xxx` block refs
 - `references/agent-recipes.md` -- common requests turned into exact commands/edits
 - `references/panel.md` -- starting the board, ports, API, troubleshooting
   (including the one-click duplicate-ID repair and the EN/中文 switch)
-- `references/weekly-review.md` -- the weekly review checklist
+- `references/weekly-review.md` -- the weekly review checklist (the ritual)
+- `references/summaries.md` -- daily / weekly report templates and the commands that
+  gather the evidence

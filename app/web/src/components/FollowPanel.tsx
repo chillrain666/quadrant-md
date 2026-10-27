@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { api } from '../api'
 import { useListDrag } from '../dragList'
+import { useHoverTip } from '../hoverDetails'
 import { renderInline } from '../inline'
 import { useT } from '../i18n'
 import type { Status, Task, TaskGroup, TasksResponse } from '../types'
@@ -53,6 +54,7 @@ interface GroupProps {
 
 function FollowGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupProps) {
   const { t } = useT()
+  const hover = useHoverTip()
   const [adding, setAdding] = useState(false)
   const [title, setTitle] = useState('')
   const [err, setErr] = useState('')
@@ -82,6 +84,7 @@ function FollowGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupP
 
   return (
     <section className="follow-card">
+      {hover.node}
       <header className="follow-head">
         <h2>{group.label}</h2>
         <span className="count">{group.count}</span>
@@ -126,7 +129,7 @@ function FollowGroup({ group, onSelect, onStatus, onCreated, onReorder }: GroupP
               className={`follow-row ${task.status} ${drag.cls(key)}`}
               key={key}
               onClick={() => onSelect(task)}
-              title={t('row.editHint')}
+              {...hover.bind(task.detail, t('row.editHint'))}
               {...drag.handlers(key)}
             >
               <button

@@ -1546,6 +1546,41 @@ select:focus {
   right: -1px;
 }
 
+/* ------------------------------------------------ hover details */
+.hover-tip {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(20, 40, 70, 0.14);
+  padding: 8px 10px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-height: 232px;
+  overflow: hidden;
+}
+
+.hover-tip.above {
+  transform: translateY(-100%);
+}
+
+.hover-line + .hover-line {
+  margin-top: 2px;
+}
+
+.hover-line code {
+  font-size: 11.5px;
+}
+
+.hover-more {
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 11.5px;
+}
+
 /* ------------------------------------------------ misc */
 
 .banner {
